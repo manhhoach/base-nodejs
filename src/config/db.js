@@ -1,7 +1,7 @@
 require('dotenv').config();
 module.exports = {
     DATABASE: {
-        DB_DBNAME: process.env.DB_DBNAME || 'mhcomputer',
+        DB_DBNAME: process.env.DB_DBNAME || 'test',
         DB_USERNAME: process.env.DB_USERNAME || 'root',
         DB_PASSWORD: process.env.DB_PASSWORD || '123456',
         DB_HOST: process.env.DB_HOST || 'localhost',

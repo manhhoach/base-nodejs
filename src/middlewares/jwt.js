@@ -10,11 +10,6 @@ module.exports.signAccessToken = (user) => {
         ...user
     }, process.env.SECRET_KEY_ACCESS_TOKEN, { expiresIn: '6h' });
 }
-module.exports.signRefreshToken = (user) => {
-    return jwt.sign({
-        ...user
-    }, process.env.SECRET_KEY_REFRESH_TOKEN, { expiresIn: '3d' });
-}
 
 
 module.exports.checkAccessToken = tryCatch(async (req, res, next) => {
@@ -41,16 +36,10 @@ module.exports.checkAccessToken = tryCatch(async (req, res, next) => {
 
 
 module.exports.checkAdmin = async (req, res, next) => {
-    if (req.user.status >= 1)
+    if (req.user.status === 1)
         next()
     else
         res.json(responseWithError(CONSTANT_MESSAGES.NOT_ALLOWED));
 }
 
-module.exports.checkOwner = async (req, res, next) => {
-    if (req.user.status === 2)
-        next()
-    else
-        res.json(responseWithError(CONSTANT_MESSAGES.NOT_ALLOWED));
-}
 
