@@ -1,6 +1,6 @@
 module.exports = {
     DATABASE: {
-        DB_DBNAME: process.env.DB_DBNAME || 'test',
+        DB_DBNAME: process.env.DB_DBNAME || 'test1',
         DB_USERNAME: process.env.DB_USERNAME || 'root',
         DB_PASSWORD: process.env.DB_PASSWORD || '123456',
         DB_HOST: process.env.DB_HOST || 'localhost',
