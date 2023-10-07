@@ -1,6 +1,5 @@
 const express = require('express')
 const app = express()
-require('dotenv').config()
 const routers = require('./routers')
 const cors = require('cors')
 const { responseWithError } = require('./utils/response')

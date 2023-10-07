@@ -17,6 +17,9 @@ const sequelize = new Sequelize(DATABASE.DB_DBNAME, DATABASE.DB_USERNAME, DATABA
 
 sequelize.models.users = require('../models/user')(sequelize, DataTypes)
 
+Object.values(sequelize.models)
+  .filter((model) => model.associate)
+  .forEach((model) => model.associate(sequelize.models));
 
 //sequelize.sync({alter: true})
 
