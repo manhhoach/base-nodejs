@@ -1,0 +1,7 @@
+07-10-2023	08:39:43: URL: /users/register, METHOD: POST, BODY: [object Object], PARAMS: [object Object], QUERY: [object Object] -> ERROR:EXISTED EMAIL
+07-10-2023	08:40:50: URL: /users/register, METHOD: POST, BODY: {"email":"user_c@gmail.com","password":"123456789","fullName":"user b"}, PARAMS: {}, QUERY: {} -> ERROR: EXISTED EMAIL
+07-10-2023	08:42:30: URL: /users/register, METHOD: POST, BODY: {"email":"user_c@gmail.com","password":"123456789","fullName":"user b"}, PARAMS: {}, QUERY: {} -> ERROR: {"statusCode":400}
+07-10-2023	08:42:56: URL: /users/register, METHOD: POST, BODY: {"email":"user_c@gmail.com","password":"123456789","fullName":"user b"}, PARAMS: {}, QUERY: {} -> ERROR: EXISTED EMAIL
+07-10-2023	08:43:23: URL: /users/register, METHOD: POST, BODY: {"email":"user_c@gmail.com","password":"123456789","fullName":"user b"}, PARAMS: {}, QUERY: {} -> ERROR: EXISTED EMAIL
+07-10-2023	08:43:39: URL: /users/register, METHOD: POST, BODY: {"email":"user_c@gmail.com","password":"123456789","fullName":"user b"}, PARAMS: {}, QUERY: {} -> ERROR: EXISTED EMAIL
+07-10-2023	08:44:16: URL: /users/register, METHOD: POST, BODY: {"email":"user_c@gmail.com","password":"123456789","fullName":"user b"}, PARAMS: {}, QUERY: {} -> ERROR: EXISTED EMAIL
