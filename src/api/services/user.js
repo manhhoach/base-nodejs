@@ -1,8 +1,10 @@
-const userModel = require("../database/db").models.users;
+const models = require("../database/db").models;
+const userModel = models.users;
 const bcryptjs = require("bcryptjs");
 const CONSTANT_MESSAGES = require("../constants/messages");
 const AppError = require("../helpers/AppError");
 const jwt = require("../middlewares/jwt");
+
 
 module.exports.login = async (email, password) => {
   let user = await userModel.findOne({ where: { email: email } });
