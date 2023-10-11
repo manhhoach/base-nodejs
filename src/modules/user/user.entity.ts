@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, BaseEntity } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, BaseEntity, CreateDateColumn } from 'typeorm';
 import { genSaltSync, hashSync, compareSync } from 'bcrypt';
 
 @Entity({
@@ -16,6 +16,9 @@ export class UserEntity extends BaseEntity {
 
   @Column({ nullable: false, select: false })
   password: string;
+
+  @CreateDateColumn()
+  created_date: Date;
 
 
   @BeforeUpdate()
