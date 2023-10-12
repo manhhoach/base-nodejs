@@ -1,18 +1,18 @@
 import { Request, Response, NextFunction } from "express";
 import { responseSuccess } from "../helpers/response";
 import { tryCatch } from "../helpers/tryCatch";
-import * as productService from "../services/product";
+import * as warehouseService from "../services/warehouse";
 
 export const getAll = tryCatch(
   async (req: Request, res: Response, next: NextFunction) => {
-    let data = await productService.getAll();
+    let data = await warehouseService.getAll();
     res.status(200).json(responseSuccess(data));
   }
 );
 
 export const create = tryCatch(
   async (req: Request, res: Response, next: NextFunction) => {
-    await productService.insert(req.body);
+    await warehouseService.insert(req.body);
     res.status(201).json(responseSuccess(null));
   }
 );
