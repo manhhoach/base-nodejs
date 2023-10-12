@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../user/user.entity';
 import { Repository } from 'typeorm';
@@ -29,34 +24,41 @@ export class AuthService {
     return this.userRepository.save(Object.assign(new UserEntity(), signUpDto));
   }
 
-  async login(loginDto: SignInDto) {
+  async login(signInDto: SignInDto) {
     const user = await this.userRepository
       .createQueryBuilder('users')
-      .where('email = :email', { email: loginDto.email })
+      .where('email = :email', { email: signInDto.email })
       .addSelect('users.password')
       .getOne();
 
     if (!user) throw new NotFoundException(MESSAGES.EMAIL_NOT_FOUND);
 
-    if (!user.comparePassword(loginDto.password))
-      throw new UnauthorizedException(MESSAGES.INCORRECT_PASSWORD);
+    if (!user.comparePassword(signInDto.password)) throw new UnauthorizedException(MESSAGES.INCORRECT_PASSWORD);
 
     const payload = { id: user.id };
     return {
       ...user,
       password: undefined,
-      accessToken: await this.jwtService.signAsync(payload),
+      accessToken: this.jwtService.sign(payload),
     };
   }
 
   async decodeToken(token: string) {
-    try {
-      const payload = await this.jwtService.verifyAsync(token);
-      const user = await this.userRepository.findOneBy({ id: payload.id });
-      if (user) return user;
-      throw new NotFoundException(MESSAGES.EMAIL_NOT_FOUND);
-    } catch (err) {
-      throw new UnauthorizedException();
+    const payload = await this.jwtService.verifyAsync(token);
+    const user: any = await this.userRepository
+      .createQueryBuilder('users')
+      .where('users.id = :id', { id: payload.id })
+      .leftJoin('users.role', 'roles')
+      .leftJoin('roles.permissions', 'permissions')
+      .select(['users.id', 'users.email', 'users.name', 'roles.name', 'permissions.name'])
+      .cache(10000)
+      .getOne();
+
+    if (user) {
+      user.permissions = user.role.permissions.map((permission) => permission.name);
+      user.role = user.role.name;
+      return user;
     }
+    throw new NotFoundException(MESSAGES.USER_NOT_FOUND);
   }
 }

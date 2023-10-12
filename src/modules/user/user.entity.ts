@@ -1,5 +1,16 @@
-import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, BaseEntity, CreateDateColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  BeforeInsert,
+  BeforeUpdate,
+  BaseEntity,
+  CreateDateColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { genSaltSync, hashSync, compareSync } from 'bcrypt';
+import { Role } from '../role/role.entity';
 
 @Entity({
   name: 'users',
@@ -20,6 +31,16 @@ export class UserEntity extends BaseEntity {
   @CreateDateColumn()
   created_date: Date;
 
+  @Column({default: 1})
+  role_id: number;
+
+  @ManyToOne(() => Role, { onDelete: 'CASCADE', nullable: false })
+  @JoinColumn({
+    name: 'role_id',
+    foreignKeyConstraintName: 'fk_user_role_id',
+    referencedColumnName: 'id',
+  })
+  role: Role;
 
   @BeforeUpdate()
   @BeforeInsert()
