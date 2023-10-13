@@ -12,4 +12,3 @@ export const responseWithError = (err: any) => {
     error: err.message ? err.message : err,
   };
 };
-
