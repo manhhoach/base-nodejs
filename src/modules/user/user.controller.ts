@@ -1,5 +1,5 @@
 import { Controller, Get, HttpStatus, Req } from '@nestjs/common';
-import { customReturn } from './../../common/custom.return';
+import { customController } from '../../common/custom-controller';
 import { responseSucess } from './../../common/response';
 
 @Controller('users')

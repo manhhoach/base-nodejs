@@ -9,6 +9,7 @@ import { PermissionModule } from './modules/permission/permission.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './modules/auth/auth.guard';
 import { RedisModule } from './modules/redis/redis.module';
+import { RolePermissionModule } from './modules/role_permission/role_permission.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { RedisModule } from './modules/redis/redis.module';
     RoleModule,
     PermissionModule,
     RedisModule,
+    RolePermissionModule,
   ],
   controllers: [],
   providers: [

@@ -1,16 +1,8 @@
-import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { Role } from './../role/role.entity';
+import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { RolePermissionEntity } from '../role_permission/role_permission.entity';
 
 @Entity({ name: 'permissions' })
-export class Permission extends BaseEntity {
+export class PermissionEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -20,11 +12,6 @@ export class Permission extends BaseEntity {
   @CreateDateColumn()
   created_date: Date;
 
-  @ManyToMany(() => Role, { onDelete: 'CASCADE' })
-  @JoinTable({
-    name: 'role_permissions',
-    joinColumn: { name: 'permission_id', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'role_id', referencedColumnName: 'id' },
-  })
-  roles: Role[];
+  @OneToMany(() => RolePermissionEntity, (role_permission)=> role_permission.permission)
+  role_permissions: RolePermissionEntity[];
 }

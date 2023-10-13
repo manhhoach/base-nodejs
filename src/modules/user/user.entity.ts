@@ -10,7 +10,8 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { genSaltSync, hashSync, compareSync } from 'bcrypt';
-import { Role } from '../role/role.entity';
+import { RoleEntity } from '../role/role.entity';
+import { RoleEnum } from '../role/role.enum';
 
 @Entity({
   name: 'users',
@@ -31,16 +32,16 @@ export class UserEntity extends BaseEntity {
   @CreateDateColumn()
   created_date: Date;
 
-  @Column({default: 1})
+  @Column({ default: RoleEnum.USER })
   role_id: number;
 
-  @ManyToOne(() => Role, { onDelete: 'CASCADE', nullable: false })
+  @ManyToOne(() => RoleEntity, { onDelete: 'CASCADE', nullable: false })
   @JoinColumn({
     name: 'role_id',
     foreignKeyConstraintName: 'fk_user_role_id',
     referencedColumnName: 'id',
   })
-  role: Role;
+  role: RoleEntity;
 
   @BeforeUpdate()
   @BeforeInsert()

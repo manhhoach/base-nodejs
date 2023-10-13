@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from '../user/user.entity';
-import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
-import { SignUpDto } from './dto/sign-up.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { MESSAGES } from '../../common/messages';
+import { UserEntity } from '../user/user.entity';
 import { SignInDto } from './dto/sign-in.dto';
+import { SignUpDto } from './dto/sign-up.dto';
 
 @Injectable()
 export class AuthService {
@@ -45,17 +45,26 @@ export class AuthService {
 
   async decodeToken(token: string) {
     const payload = await this.jwtService.verifyAsync(token);
+
     const user: any = await this.userRepository
       .createQueryBuilder('users')
       .where('users.id = :id', { id: payload.id })
       .leftJoin('users.role', 'roles')
-      .leftJoin('roles.permissions', 'permissions')
-      .select(['users.id', 'users.email', 'users.name', 'roles.name', 'permissions.name'])
+      .leftJoin('roles.role_permissions', 'role_permissions')
+      .leftJoin('role_permissions.permission', 'permissions')
+      .select([
+        'users.id',
+        'users.email',
+        'users.name',
+        'roles.name',
+        'role_permissions.permission_id',
+        'permissions.name',
+      ])
       .cache(10000)
       .getOne();
 
     if (user) {
-      user.permissions = user.role.permissions.map((permission) => permission.name);
+      user.permissions = user.role.role_permissions.map((ele) => ele.permission.name);
       user.role = user.role.name;
       return user;
     }
