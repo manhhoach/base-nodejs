@@ -1,12 +1,11 @@
-import { query } from "./../helpers/query";
+import { querySync } from "./../helpers/query";
 
 export const getAll = async () => {
-  let data = await query(`SELECT * from "warehouses"`);
-  return data.rows;
+  return querySync(`SELECT * from "warehouses"`);
 };
 
 export const insert = async (data: any) => {
-  return query(
+  return querySync(
     `INSERT INTO "warehouses" (name, location) VALUES ('${data.name}', '${data.location}');`
   );
 };

@@ -1,15 +1,22 @@
-import { Pool } from "pg";
-const pool = new Pool({
-  host: "localhost",
-  database: "test",
-  user: "postgres",
-  password: "postgres",
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
-});
+import Libpq from "libpq";
+import types from "pg-types";
+import { buildResult } from "../lib/build.result";
 
-export const query = async (queryString: string) => {
-  let data = await pool.query(queryString);
-  return data;
+const throwIfError = function (pq: Libpq) {
+  var err = pq.resultErrorMessage() || pq.errorMessage();
+  if (err) {
+    throw new Error(err);
+  }
+};
+
+export const querySync = function (text: string) {
+  const pq = new Libpq();
+  pq.connectSync(process.env.DB_URL);
+  pq.exec(text);
+  throwIfError(pq);
+
+  let arrayMode = false;
+  const result = buildResult(pq, types, arrayMode);
+  pq.finish();
+  return result.rows;
 };
